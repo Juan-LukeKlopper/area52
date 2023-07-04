@@ -13,6 +13,7 @@ pub enum ExecuteMsg {
     SetPlanetName { to: String },
     SetSapientNames { to: Vec<Sapient> },
     SetMinimumSapience { to: SapienceScale },
+    JumpRingTravel { to: Addr },
 }
 
 #[derive(Serialize, Deserialize, JsonSchema)]

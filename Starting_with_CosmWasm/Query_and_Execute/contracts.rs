@@ -1,7 +1,13 @@
 use cosmwasm_std::{
-    entry_point, to_binary, Deps, DepsMut, Env, MessageInfo, Response, Binary, StdResult 
+    entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult
+};
+use crate::error::ContractError;
+use crate::execute_fns::{
+    initiate_jumpring_travel, set_minimum_sapience, set_planet_name, set_sapient_names,
 };
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use crate::query_fns::{jumpring_check, minimum_sapience};
+use crate::state::{config, State};
 
 #[entry_point]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
@@ -22,6 +28,7 @@ pub fn execute(
         ExecuteMsg::SetPlanetName { to } => set_planet_name(to, deps, info),
         ExecuteMsg::SetSapientNames { to } => set_sapient_names(to, deps, info),
         ExecuteMsg::SetMinimumSapience { to } => set_minimum_sapience(to, deps, info),
+        ExecuteMsg::JumpRingTravel { to } => initiate_jumpring_travel(to, deps, info),
     }
 }
 
@@ -33,7 +40,7 @@ pub fn instantiate(
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     let state = State {
-        owner: info.sender.clone(),
+        owner: info.sender,
         planet_name: msg.planet_name,
         planet_sapients: msg.planet_sapients,
         minimum_sapience: msg.minimum_sapience,
