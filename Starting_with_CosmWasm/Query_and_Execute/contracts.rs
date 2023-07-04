@@ -20,6 +20,11 @@ pub fn execute(
     info: MessageInfo,
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
+    match msg {
+        ExecuteMsg::SetPlanetName { to } => set_planet_name(to, deps, info),
+        ExecuteMsg::SetSapientNames { to } => set_sapient_names(to, deps, info),
+        ExecuteMsg::SetMinimumSapience { to } => set_minimum_sapience(to, deps, info),
+    }
 }
 
 #[entry_point]
