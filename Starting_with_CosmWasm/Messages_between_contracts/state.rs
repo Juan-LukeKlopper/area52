@@ -1,4 +1,4 @@
-use cosmwasm_std::{Addr, Storage};
+use cosmwasm_std::{Storage};
 use cosmwasm_storage::{
     bucket, bucket_read, singleton, singleton_read, Bucket, ReadonlyBucket, ReadonlySingleton,
     Singleton,
@@ -10,9 +10,13 @@ use universe::species::Species;
 static CONFIG_KEY: &[u8] = b"config";
 static IMBIBER_KEY: &[u8] = b"imbiber";
 
-// an imbiber function needs to be added here
+pub fn imbiber(storage: &mut dyn Storage) -> Bucket<Imbiber> {
+    bucket(storage, IMBIBER_KEY)
+}
 
-// an imbiber_read function needs to be added here
+pub fn imbiber_read(storage: &dyn Storage) -> ReadonlyBucket<Imbiber> {
+    bucket_read(storage, IMBIBER_KEY)
+}
 
 pub fn config(storage: &mut dyn Storage) -> Singleton<State> {
     singleton(storage, CONFIG_KEY)
