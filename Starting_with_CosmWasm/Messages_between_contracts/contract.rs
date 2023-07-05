@@ -1,26 +1,21 @@
-use cosmwasm_std::{entry_point, DepsMut, Env, MessageInfo, Response};
-use crate::msg::{InstantiateMsg};
-use crate::state::{config, State};
+use cosmwasm_std::{
+    entry_point, DepsMut, Env, MessageInfo, Response,
+};
+use crate::msg::{ExecuteMsg};
 use crate::error::ContractError;
-
-static DEFAULT_NUMBER_OF_SWIGS: u8 = 3;
+use crate::execute_fns::{
+    imbibe_potion::imbibe_potion, step_through_jumpring::step_through_jumpring,
+};
 
 #[entry_point]
-pub fn instantiate(
+pub fn execute(
     deps: DepsMut,
     _env: Env,
     info: MessageInfo,
-    msg: InstantiateMsg,
+    msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
-
-    let state = State {
-        owner: info.sender,
-        dna_length: msg.dna_length,
-        dna_modulus: msg.dna_modulus,
-        swigs: DEFAULT_NUMBER_OF_SWIGS,
-    };
-    
-    config(deps.storage).save(&state)?;
-    
-    Ok(Response::default())
+    match msg {
+        ExecuteMsg::ImbibePotion { name, species } => imbibe_potion(name, species, deps, info),
+        ExecuteMsg::StepThroughJumpRing { portal, destination, traveler } => step_through_jumpring(portal, destination, traveler, deps, info),
+    }
 }
