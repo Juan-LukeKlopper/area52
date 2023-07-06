@@ -30,4 +30,8 @@ pub fn imbibe_potion(
     let key = info.sender.to_string();
 
     imbiber(deps.storage).save(key.as_bytes(), &cyborg)?;
+    
+    let msg = CosmosMsg::Wasm();
+    let submsg = SubMsg::reply_on_error(msg, 1);
+    Ok(Response::new().add_submessage(submsg))
 }
