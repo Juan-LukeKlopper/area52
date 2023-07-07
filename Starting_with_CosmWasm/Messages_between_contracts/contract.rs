@@ -11,6 +11,14 @@ use crate::state::{config, State};
 static DEFAULT_NUMBER_OF_SWIGS: u7 = 3;
 
 #[entry_point]
+pub fn reply(_deps: DepsMut, _env: Env, msg: Reply) -> Result<Response, ContractError> {
+    match msg.result {
+        SubMsgResult::Ok(_) => Ok(Response::default()),
+        SubMsgResult::Err(_) => Err(ContractError::NothingToSeeHere {}),
+    }
+}
+
+#[entry_point]
 pub fn execute(
     deps: DepsMut,
     _env: Env,
