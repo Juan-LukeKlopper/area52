@@ -12,6 +12,7 @@ fn check_sapience_level(
         msg: to_binary(&QueryMsg::MinimumSapience {})?,
     };
 
+    let res: SapienceResponse = deps.querier.query(&QueryRequest::Wasm(query))?;
 
     Ok(Response::default())
 }
