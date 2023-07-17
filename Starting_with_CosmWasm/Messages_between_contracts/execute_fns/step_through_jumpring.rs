@@ -10,5 +10,11 @@ pub fn step_through_jumpring(
     deps: DepsMut,
     info: MessageInfo,
 ) -> Result<Response, ContractError> {
-    // step_through_jumpring code needs to be added here
+    check_sapience_level(&portal, &deps, &info)?;
+
+    if traveler.cyberdized != true {
+        return Err(ContractError::NotACyborg {});
+    }
+
+    Ok(Response::default())
 }
