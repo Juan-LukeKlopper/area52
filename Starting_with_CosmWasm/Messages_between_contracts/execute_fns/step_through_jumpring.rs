@@ -16,5 +16,11 @@ pub fn step_through_jumpring(
         return Err(ContractError::NotACyborg {});
     }
 
-    Ok(Response::default())
+    let msg = WasmMsg::Execute {
+        contract_addr: portal.to_string(),
+        msg: to_binary(&ExecuteMsg::JumpRingTravel { to: destination }).unwrap(),
+        funds: vec![],
+    };
+
+    Ok(Response::new().add_message(msg))
 }
