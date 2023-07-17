@@ -14,5 +14,13 @@ fn check_sapience_level(
 
     let res: SapienceResponse = deps.querier.query(&QueryRequest::Wasm(query))?;
 
+    let key = info.sender.as_bytes();
+    let imbiber = imbiber_read(deps.storage).load(key).unwrap();
+    let species_sapience = imbiber.species.sapience_level;
+
+    if sapience_value(&res.level) < sapience_value(&species_sapience) {
+        return Err(ContractError::NotSapientEnough {});
+    };
+
     Ok(Response::default())
 }
